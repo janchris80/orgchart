@@ -43,6 +43,7 @@ function initDiagram(flatData) {
         if (!options.hasSubTree) {
           options.type        = window.currentSubtree;
           options.orientation = 'Horizontal';
+          options.offset      = 20;
         }
       },
     },

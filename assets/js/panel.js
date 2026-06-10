@@ -43,9 +43,9 @@ function openDetailPanel(data) {
     </div>`;
   }).join('');
 
-  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('chart-body').classList.add('panel-open');
 }
 
 function closeDetailPanel() {
-  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('chart-body').classList.remove('panel-open');
 }

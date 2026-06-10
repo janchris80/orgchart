@@ -13,12 +13,18 @@
 function setSubtree(type) {
   window.currentSubtree = type;
   const d = window.orgDiagram;
-  d.layout.getLayoutInfo = (node, options) => {
-    if (!options.hasSubTree) {
-      options.type        = window.currentSubtree;
-      options.orientation = 'Horizontal';
+  
+  d.layout = Object.assign({}, d.layout, {
+    getLayoutInfo: (node, options) => {
+      // In EJ2 OrgChart, !hasSubTree usually identifies the leaf-parent levels
+      if (!options.hasSubTree) {
+        options.type = window.currentSubtree;
+        options.orientation = 'Horizontal';
+        options.offset = 20;
+      }
     }
-  };
+  });
+  
   d.dataBind();
   d.doLayout();
   refreshToolbarState();
