@@ -1,0 +1,22 @@
+/* responsive.css */
+@media (max-width: 768px) {
+  #page-header { gap: 8px; }
+  #stats-row   { display: none; }        /* hide stats on small screens */
+
+  #toolbar     { gap: 4px; padding: 5px 8px; overflow-x: auto; flex-wrap: nowrap; }
+  .tb-label    { display: none; }        /* hide group labels */
+  .tb-sep      { display: none; }
+  #search-input{ width: 140px; }
+
+  #chart-body.panel-open { grid-template-columns: 1fr; } /* panel overlays on mobile */
+  #detail-panel {
+    position: absolute; top: 0; right: 0;
+    height: 100%; z-index: 50;
+    box-shadow: -4px 0 20px rgba(0,0,0,.12);
+  }
+}
+
+@media (max-width: 480px) {
+  #search-input { width: 110px; font-size: 11px; }
+  .tb-btn       { padding: 3px 7px; font-size: 10px; }
+}
