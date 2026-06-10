@@ -49,6 +49,7 @@ function flattenOrgTree(nodes, pid = '', result = []) {
     });
 
     for (const p of posSorted) {
+      const isThisHead = head && p.id === head.id;
       result.push({
         id: 'pos-' + p.id,
         pid: officeNodeId,
@@ -60,7 +61,8 @@ function flattenOrgTree(nodes, pid = '', result = []) {
         posName: p.status === 'FILLED' ? formatPersonName(p) : '(Vacant Position)',
         status: p.status,
         salaryGrade: p.salary_grade,
-        appointment: p.appointment_name
+        appointment: p.appointment_name,
+        isHead: isThisHead
       });
     }
 

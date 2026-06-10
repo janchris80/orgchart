@@ -57,11 +57,12 @@ function initDiagram(flatData) {
 
     getNodeDefaults: (node) => {
       if (node.data && node.data.type === 'position') {
-        node.width  = 180;
-        node.height = 70;
+        const isHead = node.data.isHead || false;
+        node.width  = isHead ? 200 : 180;
+        node.height = isHead ? 120 : 100;
       } else {
         node.width  = 220;
-        node.height = 110;
+        node.height = 60;
       }
       
       // Inject the HTML template directly into the node's shape here
@@ -85,11 +86,9 @@ function initDiagram(flatData) {
 
     getConnectorDefaults: (connector) => {
       connector.type  = 'Orthogonal';
-      connector.style = { strokeColor: '#CBD5E1', strokeWidth: 1.5 };
-      connector.targetDecorator = {
-        shape: 'Arrow',
-        style: { fill: '#CBD5E1', strokeColor: '#CBD5E1', strokeWidth: 1 },
-      };
+      connector.style = { strokeColor: '#4a5568', strokeWidth: 2 };
+      connector.targetDecorator = { shape: 'None' };
+      connector.cornerRadius = 0;
       return connector;
     },
 

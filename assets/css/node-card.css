@@ -1,71 +1,134 @@
-/* node-card.css */
-.nc-card {
-  width: 216px; min-height: 106px;
-  padding: 7px 10px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  display: flex; flex-direction: column; gap: 2px;
+/* node-card.css — Government Teal/Green Theme */
+
+/* ─── OFFICE NODE (Section header bar) ─── */
+.nc-card.office {
+  width: 216px; min-height: 50px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #1a6e5c, #2a9d8f);
+  border: none;
+  border-radius: 6px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px;
   cursor: grab;
   user-select: none;
+  box-shadow: 0 3px 12px rgba(26,110,92,0.25);
+  transition: box-shadow .15s, transform .15s;
+}
+.nc-card.office:hover  { box-shadow: 0 6px 20px rgba(26,110,92,0.35); transform: translateY(-1px); }
+.nc-card.office:active { cursor: grabbing; }
+
+/* Level-specific gradient tints */
+.nc-card.office.section { background: linear-gradient(135deg, #2a9d8f, #3bb8a8); }
+.nc-card.office.unit    { background: linear-gradient(135deg, #3bb8a8, #5ec6b8); }
+
+.nc-office-name {
+  font-size: 11px; font-weight: 800; color: #fff;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  text-align: center; line-height: 1.3;
+}
+.nc-office-stats {
+  display: flex; gap: 8px; margin-top: 4px;
+}
+.nc-office-stats span {
+  font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.85);
+}
+
+/* ─── POSITION NODE (Person card) ─── */
+.nc-card.position {
+  width: 176px; min-height: 96px;
+  padding: 8px 8px 6px;
+  background: #fff;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: box-shadow .15s, border-color .15s;
 }
-.nc-card:hover  { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
-.nc-card:active { cursor: grabbing; }
+.nc-card.position:hover  { box-shadow: 0 4px 16px rgba(0,0,0,0.12); border-color: #1a6e5c; }
+.nc-card.position:active { cursor: grabbing; }
 
-.nc-badge {
-  font-size: 9px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .5px;
-  padding: 1px 6px; border-radius: 4px;
-  align-self: flex-start; margin-bottom: 2px;
-}
-
-.nc-name {
-  font-size: 12px; font-weight: 700; color: #1e293b;
-  line-height: 1.3;
+/* Head-of-office card — slightly larger + teal bottom border */
+.nc-card.position.is-head {
+  width: 196px; min-height: 110px;
+  border-bottom: 3px solid #1a6e5c;
 }
 
-.nc-head {
-  font-size: 11px; color: #334155; font-weight: 500;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+/* Photo placeholder */
+.nc-avatar {
+  width: 52px; height: 52px;
+  border-radius: 8px;
+  background: #e5e7eb;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
 }
-.nc-pos {
-  font-size: 10px; color: #64748b;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.nc-card.position.is-head .nc-avatar {
+  width: 62px; height: 62px;
 }
+.nc-avatar-icon {
+  font-size: 22px; color: #9ca3af;
+}
+.nc-card.position.is-head .nc-avatar-icon { font-size: 28px; }
+
+/* Person name */
+.nc-person-name {
+  font-size: 10px; font-weight: 700; color: #1a1a2e;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  text-align: center; line-height: 1.3;
+  max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.nc-card.position.is-head .nc-person-name { font-size: 11px; }
+
+/* Position title */
+.nc-person-title {
+  font-size: 9px; color: #1a6e5c; font-weight: 600;
+  text-align: center; line-height: 1.2;
+}
+.nc-card.position.is-head .nc-person-title { font-size: 10px; }
+
+/* SG + Appointment badges row */
+.nc-person-meta {
+  display: flex; gap: 4px; align-items: center; margin-top: 2px;
+}
+.nc-sg-badge {
+  font-size: 8px; font-weight: 600; color: #64748b;
+}
+
+/* Appointment badge */
 .nc-appt {
-  font-size: 9px; font-weight: 600;
-  padding: 1px 5px; border-radius: 4px;
-  align-self: flex-start;
+  font-size: 8px; font-weight: 600;
+  padding: 1px 5px; border-radius: 3px;
 }
-.nc-no-head { color: #94a3b8; font-style: italic; }
 
-.nc-stats { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 3px; }
-.nc-stats span { font-size: 9.5px; font-weight: 500; }
-.nc-filled   { color: #16a34a; }
-.nc-vacant   { color: #d97706; }
-.nc-unfunded { color: #dc2626; }
+/* ─── VACANT CARD ─── */
+.nc-card.position.vacant {
+  opacity: 0.75;
+  border-style: dashed;
+}
+.nc-card.position.vacant .nc-avatar {
+  border: 2px dashed #d0d5dd;
+  background: #f9fafb;
+}
+.nc-card.position.vacant .nc-person-name {
+  color: #9ca3af; font-style: italic; font-weight: 500;
+}
 
-/* Position Node Overrides */
-.nc-card.position {
-  width: 176px; min-height: 66px;
-  padding: 6px 8px;
-  border-left-width: 4px;
+/* ─── UNFUNDED CARD ─── */
+.nc-card.position.unfunded {
+  opacity: 0.5;
+  border-style: dashed;
+  border-color: #ef4444;
 }
-.nc-card.position.filled { border-left-color: #22c55e; }
-.nc-card.position.vacant { border-left-color: #f59e0b; }
-.nc-card.position.unfunded { border-left-color: #ef4444; opacity: 0.8; }
-
-.nc-pos-title {
-  font-size: 10px; font-weight: 700; color: #4338ca;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-bottom: 2px;
+.nc-card.position.unfunded .nc-avatar {
+  border: 2px dashed #fca5a5;
+  background: #fef2f2;
 }
-.nc-pos-name {
-  font-size: 11px; font-weight: 600; color: #1e293b;
-  margin-bottom: 4px;
+.nc-card.position.unfunded .nc-person-name {
+  color: #9ca3af; font-style: italic; font-weight: 500;
 }
-.nc-pos-meta {
-  display: flex; gap: 6px; align-items: center;
-}
-.nc-sg { font-size: 9px; font-weight: 600; color: #64748b; }

@@ -21,10 +21,15 @@ require 'config.php';
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header (Government Style) -->
 <div id="page-header">
-  <h1>🏛 <?= APP_NAME ?></h1>
-  <span id="period-label"></span>
+  <div id="page-header-logo">🏛</div>
+  <div id="page-header-text">
+    <span class="gov-line">Republic of the Philippines</span>
+    <span class="gov-line">Province of Davao Del Norte</span>
+    <span class="gov-line">Municipality of Kapalong</span>
+    <h1><?= APP_NAME ?><span class="subtitle">Organizational Structure</span></h1>
+  </div>
   <div id="stats-row">
     <span class="chip filled"   id="stat-filled">—</span>
     <span class="chip vacant"   id="stat-vacant">—</span>

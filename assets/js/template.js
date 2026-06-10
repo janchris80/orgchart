@@ -1,59 +1,54 @@
 // template.js
-// Depends on: utils.js (toTitleCase)
+// Depends on: utils.js (toTitleCase, getInitials)
 
-const LEVEL_STYLE = {
-  division: { bg: '#EEF2FF', border: '#6366F1', color: '#4338CA', label: 'Division' },
-  section:  { bg: '#F0FDF4', border: '#22C55E', color: '#15803D', label: 'Section'  },
-  unit:     { bg: '#FFF7ED', border: '#F97316', color: '#C2410C', label: 'Unit'      },
+const LEVEL_CLASS = {
+  division: 'division',
+  section:  'section',
+  unit:     'unit',
 };
 
 const APPT_STYLE = {
   'Permanent':         'background:#dcfce7;color:#166534',
   'Casual':            'background:#fef3c7;color:#92400e',
   'Co-Terminous':      'background:#ede9fe;color:#4c1d95',
-  'Elected Officials': 'background:#dbeafe;color:#1e3a8a',
+  'Elected Officials': 'background:#fef3c7;color:#92400e;border:1px solid #c9a94e',
 };
 
 function buildNodeTemplate(data) {
+  // ─── POSITION NODE (person card) ───
   if (data.type === 'position') {
-    const isFilled = data.status === 'FILLED';
     const statusClass = data.status.toLowerCase();
+    const isFilled = data.status === 'FILLED';
+    const isHead = data.isHead || false;
     const ast = APPT_STYLE[data.appointment] || 'background:#f1f5f9;color:#475569';
-    
+
+    const headClass = isHead ? ' is-head' : '';
+    const initials = isFilled ? getInitials(data.posName.split(' ')[0], data.posName.split(' ').pop()) : '';
+
     return `
-      <div class="nc-card position ${statusClass}" data-pos-id="${data.posId}">
-        <div class="nc-pos-title" title="${data.posTitle}">${toTitleCase(data.posTitle || '')}</div>
-        <div class="nc-pos-name">${data.posName}</div>
-        <div class="nc-pos-meta">
-          <span class="nc-sg">SG ${data.salaryGrade ?? '—'}</span>
+      <div class="nc-card position ${statusClass}${headClass}" data-pos-id="${data.posId}">
+        <div class="nc-avatar">
+          <span class="nc-avatar-icon">${isFilled ? '👤' : '○'}</span>
+        </div>
+        <div class="nc-person-name">${isFilled ? data.posName : '— VACANT —'}</div>
+        <div class="nc-person-title">${toTitleCase(data.posTitle || '')}</div>
+        <div class="nc-person-meta">
+          <span class="nc-sg-badge">SG ${data.salaryGrade ?? '—'}</span>
           ${data.appointment ? `<span class="nc-appt" style="${ast}">${data.appointment}</span>` : ''}
         </div>
       </div>`;
   }
 
-  // Office Card
-  const ls  = LEVEL_STYLE[data.orgLevel] || LEVEL_STYLE['unit'];
-  const ast = APPT_STYLE[data.headAppt]  || 'background:#f1f5f9;color:#475569';
-
-  const headBlock = data.headName
-    ? `<div class="nc-head">${data.headName}</div>
-       <div class="nc-pos">${data.headPos || ''}${data.headSG ? ' · SG ' + data.headSG : ''}</div>
-       <span class="nc-appt" style="${ast}">${data.headAppt || ''}</span>`
-    : `<div class="nc-head nc-no-head">— No head assigned —</div>`;
-
-  const vacantBit   = data.vacant
-    ? `<span class="nc-vacant">◌ ${data.vacant} vacant</span>` : '';
-  const unfundedBit = data.unfunded
-    ? `<span class="nc-unfunded">✕ ${data.unfunded} unfunded</span>` : '';
+  // ─── OFFICE NODE (teal section header bar) ───
+  const levelClass = LEVEL_CLASS[data.orgLevel] || 'unit';
 
   return `
-    <div class="nc-card" style="border-left:3px solid ${ls.border}" data-org-id="${data.orgId}">
-      <span class="nc-badge" style="background:${ls.bg};color:${ls.color}">${ls.label}</span>
-      <div class="nc-name">${toTitleCase(data.orgName)}</div>
-      ${headBlock}
-      <div class="nc-stats">
-        <span class="nc-filled">● ${data.filled} filled</span>
-        ${vacantBit}${unfundedBit}
+    <div class="nc-card office ${levelClass}" data-org-id="${data.orgId}">
+      <div class="nc-office-name">${toTitleCase(data.orgName)}</div>
+      <div class="nc-office-stats">
+        <span>● ${data.filled}</span>
+        ${data.vacant ? `<span>◌ ${data.vacant}</span>` : ''}
+        ${data.unfunded ? `<span>✕ ${data.unfunded}</span>` : ''}
       </div>
     </div>`;
 }
