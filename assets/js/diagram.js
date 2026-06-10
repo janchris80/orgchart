@@ -40,10 +40,18 @@ function initDiagram(flatData) {
       verticalSpacing:   50,
       enableAnimation:   true,
       getLayoutInfo: (node, options) => {
-        if (!options.hasSubTree) {
-          options.type        = window.currentSubtree;
+        let typeToApply = null;
+        
+        if (node.data && node.data.subtreeType) {
+          typeToApply = node.data.subtreeType;
+        } else if (!options.hasSubTree) {
+          typeToApply = window.currentSubtree;
+        }
+
+        if (typeToApply) {
+          options.type = typeToApply;
           options.orientation = 'Horizontal';
-          options.offset      = 20;
+          options.offset = 20;
         }
       },
     },

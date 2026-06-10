@@ -11,21 +11,35 @@
 // 'Center'    = centred below parent (default)
 
 function setSubtree(type) {
-  window.currentSubtree = type;
   const d = window.orgDiagram;
   
-  d.layout = Object.assign({}, d.layout, {
-    getLayoutInfo: (node, options) => {
-      // In EJ2 OrgChart, !hasSubTree usually identifies the leaf-parent levels
-      if (!options.hasSubTree) {
-        options.type = window.currentSubtree;
-        options.orientation = 'Horizontal';
-        options.offset = 20;
-      }
+  if (d.selectedItems.nodes.length > 0) {
+    // Apply specifically to selected nodes
+    for (const node of d.selectedItems.nodes) {
+      if (node.data) node.data.subtreeType = type;
     }
-  });
-  
-  d.dataBind();
+  } else {
+    // Apply globally
+    window.currentSubtree = type;
+  }
+
+  // Redefine getLayoutInfo to handle both global and per-node overrides
+  d.layout.getLayoutInfo = (node, options) => {
+    let typeToApply = null;
+    
+    if (node.data && node.data.subtreeType) {
+      typeToApply = node.data.subtreeType;
+    } else if (!options.hasSubTree) {
+      typeToApply = window.currentSubtree;
+    }
+
+    if (typeToApply) {
+      options.type = typeToApply;
+      options.orientation = 'Horizontal';
+      options.offset = 20;
+    }
+  };
+
   d.doLayout();
   refreshToolbarState();
 }
