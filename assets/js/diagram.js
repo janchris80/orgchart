@@ -54,8 +54,13 @@ function initDiagram(flatData) {
     },
 
     getNodeDefaults: (node) => {
-      node.width  = 220;
-      node.height = 110;
+      if (node.data && node.data.type === 'position') {
+        node.width  = 180;
+        node.height = 70;
+      } else {
+        node.width  = 220;
+        node.height = 110;
+      }
       
       // Inject the HTML template directly into the node's shape here
       if (node.data) {
@@ -88,7 +93,9 @@ function initDiagram(flatData) {
 
     // Open detail panel on node click
     click: (args) => {
-      if (args.element?.data) openDetailPanel(args.element.data);
+      if (args.element?.data && args.element.data.type === 'office') {
+        openDetailPanel(args.element.data);
+      }
     },
 
     // ── Q4-C only: re-parent drop ─────────────────────────────────────────

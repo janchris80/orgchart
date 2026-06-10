@@ -15,6 +15,23 @@ const APPT_STYLE = {
 };
 
 function buildNodeTemplate(data) {
+  if (data.type === 'position') {
+    const isFilled = data.status === 'FILLED';
+    const statusClass = data.status.toLowerCase();
+    const ast = APPT_STYLE[data.appointment] || 'background:#f1f5f9;color:#475569';
+    
+    return `
+      <div class="nc-card position ${statusClass}" data-pos-id="${data.posId}">
+        <div class="nc-pos-title" title="${data.posTitle}">${toTitleCase(data.posTitle || '')}</div>
+        <div class="nc-pos-name">${data.posName}</div>
+        <div class="nc-pos-meta">
+          <span class="nc-sg">SG ${data.salaryGrade ?? '—'}</span>
+          ${data.appointment ? `<span class="nc-appt" style="${ast}">${data.appointment}</span>` : ''}
+        </div>
+      </div>`;
+  }
+
+  // Office Card
   const ls  = LEVEL_STYLE[data.orgLevel] || LEVEL_STYLE['unit'];
   const ast = APPT_STYLE[data.headAppt]  || 'background:#f1f5f9;color:#475569';
 
