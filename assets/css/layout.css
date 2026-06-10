@@ -38,17 +38,13 @@ body {
 /* Main body */
 #chart-body {
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  display: flex;
   overflow: hidden;
   position: relative;
-  transition: grid-template-columns .25s;
 }
-#chart-body.panel-open { grid-template-columns: 1fr 320px; }
 
 /* Diagram area */
-#diagram-wrap { overflow: hidden; position: relative; }
+#diagram-wrap { flex: 1; overflow: hidden; position: relative; }
 #diagram      { width: 100%; height: 100%; }
 
 /* Loading overlay */

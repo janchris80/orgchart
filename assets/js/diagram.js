@@ -117,3 +117,26 @@ function initDiagram(flatData) {
     window.orgDiagram.fitPage();
   }, 100);
 }
+
+// ── Spacebar Panning ──────────────────────────────────────────────────────────
+let isPanning = false;
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' && !isPanning && e.target.tagName !== 'INPUT') {
+    isPanning = true;
+    if (window.orgDiagram) {
+      window.orgDiagram.tool = ej.diagrams.DiagramTools.ZoomPan;
+      window.orgDiagram.dataBind();
+    }
+    e.preventDefault();
+  }
+});
+document.addEventListener('keyup', (e) => {
+  if (e.code === 'Space' && isPanning) {
+    isPanning = false;
+    if (window.orgDiagram) {
+      window.orgDiagram.tool = ej.diagrams.DiagramTools.Default | ej.diagrams.DiagramTools.SingleSelect;
+      window.orgDiagram.dataBind();
+    }
+    e.preventDefault();
+  }
+});
