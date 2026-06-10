@@ -1,42 +1,33 @@
 // toolbar.js
-// Depends on: diagram.js (window.orgDiagram, window.currentSubtree, window.currentOrientation)
+// Depends on: diagram.js (window.orgDiagram, window.currentSubtreeType,
+//             window.currentSubtreeOrientation, window.currentOrientation)
 
 // ── Subtree alignment ─────────────────────────────────────────────────────────
-// Maps to EJ2 getLayoutInfo options.type:
-// 'Linear'    = children in one vertical column
-// 'Alternate' = children alternate left/right
-// 'Right'     = children hang right
-// 'Left'      = children hang left
-// 'Balanced'  = balanced horizontal rows
-// 'Center'    = centred below parent (default)
+// Syncfusion EJ2 getLayoutInfo has TWO properties that work together:
+//   options.type        → 'Left' | 'Right' | 'Center' | 'Alternate' | 'Balanced'
+//   options.orientation → 'Horizontal' | 'Vertical'
+//
+// The Syncfusion free-tools org-chart app exposes 7 buttons combining them:
+//   0: Alternate + Horizontal
+//   1: Balanced  + Horizontal
+//   2: Right     + Horizontal
+//   3: Left      + Horizontal
+//   4: Center    + Horizontal
+//   5: Left      + Vertical
+//   6: Right     + Vertical
 
-function setSubtree(type) {
+function setSubtree(type, orientation) {
+  window.currentSubtreeType        = type;
+  window.currentSubtreeOrientation = orientation;
+
   const d = window.orgDiagram;
-  
-  if (d.selectedItems.nodes.length > 0) {
-    // Apply specifically to selected nodes
-    for (const node of d.selectedItems.nodes) {
-      if (node.data) node.data.subtreeType = type;
-    }
-  } else {
-    // Apply globally
-    window.currentSubtree = type;
-  }
 
-  // Redefine getLayoutInfo to handle both global and per-node overrides
+  // Redefine getLayoutInfo with the new values
   d.layout.getLayoutInfo = (node, options) => {
-    let typeToApply = null;
-    
-    if (node.data && node.data.subtreeType) {
-      typeToApply = node.data.subtreeType;
-    } else if (!options.hasSubTree) {
-      typeToApply = window.currentSubtree;
-    }
-
-    if (typeToApply) {
-      options.type = typeToApply;
-      options.orientation = 'Horizontal';
-      options.offset = 20;
+    if (!options.hasSubTree) {
+      options.type        = window.currentSubtreeType;
+      options.orientation = window.currentSubtreeOrientation;
+      options.offset      = 20;
     }
   };
 
@@ -46,8 +37,8 @@ function setSubtree(type) {
 
 // ── Orientation ───────────────────────────────────────────────────────────────
 function setOrientation(dir) {
-  window.currentOrientation      = dir;
-  window.orgDiagram.layout.orientation = dir;
+  window.currentOrientation             = dir;
+  window.orgDiagram.layout.orientation   = dir;
   window.orgDiagram.dataBind();
   window.orgDiagram.doLayout();
   refreshToolbarState();
@@ -72,11 +63,30 @@ function collapseAll() {
 }
 
 // ── Active state highlight ────────────────────────────────────────────────────
+// Build a quick lookup: button-index → { type, orientation }
+const SUBTREE_COMBOS = [
+  { type: 'Alternate', orientation: 'Horizontal' },  // btn-st-0
+  { type: 'Balanced',  orientation: 'Horizontal' },  // btn-st-1
+  { type: 'Right',     orientation: 'Horizontal' },  // btn-st-2
+  { type: 'Left',      orientation: 'Horizontal' },  // btn-st-3
+  { type: 'Center',    orientation: 'Horizontal' },  // btn-st-4
+  { type: 'Left',      orientation: 'Vertical'   },  // btn-st-5
+  { type: 'Right',     orientation: 'Vertical'   },  // btn-st-6
+];
+
 function refreshToolbarState() {
-  ['Linear','Alternate','Right','Left','Balanced','Center'].forEach(t => {
-    document.getElementById('btn-st-' + t)
-      ?.classList.toggle('is-active', t === window.currentSubtree);
+  // Subtree buttons
+  SUBTREE_COMBOS.forEach((combo, i) => {
+    const el = document.getElementById('btn-st-' + i);
+    if (el) {
+      el.classList.toggle('is-active',
+        combo.type === window.currentSubtreeType &&
+        combo.orientation === window.currentSubtreeOrientation
+      );
+    }
   });
+
+  // Orientation buttons
   ['TopToBottom','LeftToRight','BottomToTop','RightToLeft'].forEach(d => {
     document.getElementById('btn-or-' + d)
       ?.classList.toggle('is-active', d === window.currentOrientation);

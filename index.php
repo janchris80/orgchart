@@ -42,14 +42,15 @@ require 'config.php';
   </div>
   <div class="tb-sep"></div>
 
-  <!-- Subtree alignment -->
+  <!-- Subtree alignment (7 combos matching Syncfusion's org chart tool) -->
   <span class="tb-label">Subtree</span>
-  <button class="tb-btn" title="Linear"    onclick="setSubtree('Linear')"    id="btn-st-Linear">│</button>
-  <button class="tb-btn" title="Alternate" onclick="setSubtree('Alternate')" id="btn-st-Alternate">⫠</button>
-  <button class="tb-btn" title="Right"     onclick="setSubtree('Right')"     id="btn-st-Right">┤</button>
-  <button class="tb-btn" title="Left"      onclick="setSubtree('Left')"      id="btn-st-Left">├</button>
-  <button class="tb-btn" title="Balanced"  onclick="setSubtree('Balanced')"  id="btn-st-Balanced">⊞</button>
-  <button class="tb-btn" title="Center"    onclick="setSubtree('Center')"    id="btn-st-Center">⊟</button>
+  <button class="tb-btn" title="Alternate (Horizontal)" onclick="setSubtree('Alternate','Horizontal')" id="btn-st-0">⇔⫠</button>
+  <button class="tb-btn" title="Balanced (Horizontal)"  onclick="setSubtree('Balanced','Horizontal')"  id="btn-st-1">⊞</button>
+  <button class="tb-btn" title="Right (Horizontal)"     onclick="setSubtree('Right','Horizontal')"     id="btn-st-2">⊢</button>
+  <button class="tb-btn" title="Left (Horizontal)"      onclick="setSubtree('Left','Horizontal')"      id="btn-st-3">⊣</button>
+  <button class="tb-btn" title="Center (Horizontal)"    onclick="setSubtree('Center','Horizontal')"    id="btn-st-4">⊟</button>
+  <button class="tb-btn" title="Left (Vertical)"        onclick="setSubtree('Left','Vertical')"        id="btn-st-5">├↕</button>
+  <button class="tb-btn" title="Right (Vertical)"       onclick="setSubtree('Right','Vertical')"       id="btn-st-6">↕┤</button>
   <div class="tb-sep"></div>
 
   <!-- Orientation -->

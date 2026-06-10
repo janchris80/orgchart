@@ -24,8 +24,9 @@ ej.diagrams.Diagram.Inject(
 );
 
 // ── State ─────────────────────────────────────────────────────────────────────
-window.currentSubtree    = 'Center';
-window.currentOrientation = 'TopToBottom';
+window.currentSubtreeType         = 'Alternate';
+window.currentSubtreeOrientation  = 'Horizontal';
+window.currentOrientation         = 'TopToBottom';
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 function initDiagram(flatData) {
@@ -40,18 +41,10 @@ function initDiagram(flatData) {
       verticalSpacing:   50,
       enableAnimation:   true,
       getLayoutInfo: (node, options) => {
-        let typeToApply = null;
-        
-        if (node.data && node.data.subtreeType) {
-          typeToApply = node.data.subtreeType;
-        } else if (!options.hasSubTree) {
-          typeToApply = window.currentSubtree;
-        }
-
-        if (typeToApply) {
-          options.type = typeToApply;
-          options.orientation = 'Horizontal';
-          options.offset = 20;
+        if (!options.hasSubTree) {
+          options.type        = window.currentSubtreeType;
+          options.orientation = window.currentSubtreeOrientation;
+          options.offset      = 20;
         }
       },
     },
